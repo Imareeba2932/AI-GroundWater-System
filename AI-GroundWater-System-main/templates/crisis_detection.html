@@ -1,0 +1,226 @@
+{% extends 'dashboard.html' %}
+
+{% block css %}
+<style>
+
+/* MAIN GRID */
+.dashboard{
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    padding: 10px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+/* CARD */
+.card{
+    background: white;
+    border-radius: 12px;
+    padding: 15px;
+    height: 300px;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.03);
+    overflow: hidden;
+    min-width: 0;
+    border-top: 4px solid #0B3C5D;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+}
+
+.card:nth-child(2n) { border-top-color: #FFB300; }
+.card:nth-child(3n) { border-top-color: #2CA58D; }
+
+/* TITLE */
+.card h4{
+    font-size: 15px;
+    text-align: center;
+    margin-bottom: 10px;
+    color: #112B3C;
+    font-weight: 600;
+}
+
+/* GRAPH */
+.graph{
+    flex: 1;
+    width: 100%;
+    min-width: 0;
+}
+
+/* FIX PLOTLY / SVG */
+.graph > div,
+.graph iframe,
+.graph svg{
+    width: 100% !important;
+    height: 100% !important;
+    background: transparent !important;
+}
+
+/* BIG CARD */
+.big, .treemap{
+    grid-column: span 2;
+    height: 320px;
+}
+
+/* FULL WIDTH TABLE */
+.full{
+    grid-column: 1 / -1;
+    height: 350px;
+}
+
+/* RESPONSIVE */
+@media(max-width:900px){
+    .dashboard{
+        grid-template-columns: repeat(2, 1fr);
+    }
+    .big, .treemap, .full{
+        grid-column: span 2;
+    }
+}
+
+@media(max-width:500px){
+    .dashboard{
+        grid-template-columns: 1fr;
+    }
+    .big, .treemap, .full{
+        grid-column: span 1;
+    }
+}
+
+</style>
+{% endblock %}
+
+{% block content %}
+
+<div class="dashboard">
+
+    <!-- FULL -->
+    <div class="card full">
+        <h4>State → District Risk Map</h4>
+        <div class="graph">{{ graph2|safe }}</div>
+        
+    </div>
+
+    <!-- BIG -->
+    <div class="card big">
+        <h4>Top Crisis Districts</h4>
+        <div class="graph">{{ graph1|safe }}</div>
+        
+    </div>
+
+    <!-- 🔥 SWAP DONE -->
+     <div class="card">
+        <h4>Stress vs Risk</h4>
+        <div class="graph">{{ graph7|safe }}</div>
+        
+    </div> 
+
+    <div class="card">
+        <h4>Extraction Ratio Analysis</h4>
+        <div class="graph">{{ graph3|safe }}</div>
+        
+    </div> 
+
+    <!-- ROW -->
+    <div class="card">
+        <h4>Risk Scatter Pattern</h4>
+        <div class="graph">{{ graph4|safe }}</div>
+        
+    </div> 
+
+    <div class="card">
+        <h4>Alert Zones</h4>
+        <div class="graph">{{ graph5|safe }}</div>
+        
+    </div>
+
+    <div class="card">
+        <h4>Over Exploited Areas</h4>
+        <div class="graph">{{ graph6|safe }}</div>
+        
+    </div> 
+
+
+
+    <!-- ROW -->
+    <div class="card">
+        <h4>Top Crisis Comparison</h4>
+        <div class="graph">{{ graph8|safe }}</div>
+        
+    </div> 
+
+    <div class="card">
+        <h4>Alert Distribution</h4>
+        <div class="graph">{{ graph9|safe }}</div>
+        
+    </div> 
+
+    <div class="card">
+        <h4>Risk Segmentation</h4>
+        <div class="graph">{{ graph10|safe }}</div>
+        
+    </div>
+
+    <!-- LAST -->
+    <div class="card big">
+        <h4>Threshold Breach</h4>
+        <div class="graph">{{ graph11|safe }}</div>
+        
+    </div>
+
+    <!-- FINAL -->
+    <div class="card big">
+        <h4>Risk Clustering</h4>
+        <div class="graph">{{ graph12|safe }}</div>
+        
+    </div> 
+
+    <div class="card">
+        <h4>Average National Risk</h4>
+        <div class="graph">{{ graph13|safe }}</div>
+    </div>
+
+</div>
+
+{% endblock %} 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

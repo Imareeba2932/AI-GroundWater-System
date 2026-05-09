@@ -1,0 +1,164 @@
+{% extends "dashboard.html" %}
+
+{% block css %}
+<style>
+
+/* MAIN GRID */
+.dashboard-grid{
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    padding: 10px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+/* CARD */
+.card{
+    background: white;
+    border-radius: 12px;
+    padding: 15px;
+    height: 300px;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.03);
+    overflow: hidden;
+    min-width: 0;
+    border-top: 4px solid #4a7c59;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+}
+
+.card:nth-child(2n) { border-top-color: #6b8f47; }
+.card:nth-child(3n) { border-top-color: #8aad3a; }
+
+/* TITLE */
+.card h3{
+    font-size: 15px;
+    text-align: center;
+    margin-bottom: 10px;
+    color: #112B3C;
+    font-weight: 600;
+}
+
+/* GRAPH */
+.graph{
+    flex: 1;
+    width: 100%;
+    min-width: 0;
+}
+
+/* FIX PLOTLY / SVG */
+.graph > div,
+.graph iframe,
+.graph svg{
+    width: 100% !important;
+    height: 100% !important;
+    background: transparent !important;
+}
+
+/* BIG CARD */
+.big, .treemap{
+    grid-column: span 2;
+    height: 320px;
+}
+
+/* FULL WIDTH TABLE */
+.full{
+    grid-column: 1 / -1;
+    height: 350px;
+}
+
+/* RESPONSIVE */
+@media(max-width:900px){
+    .dashboard-grid{
+        grid-template-columns: repeat(2, 1fr);
+    }
+    .big, .treemap, .full{
+        grid-column: span 2;
+    }
+}
+
+@media(max-width:500px){
+    .dashboard-grid{
+        grid-template-columns: 1fr;
+    }
+    .big, .treemap, .full{
+        grid-column: span 1;
+    }
+}
+
+</style>
+{% endblock %}
+
+{% block content %}
+
+<div class="dashboard-grid">
+
+    <!-- FULL TABLE -->
+    <div class="card full">
+        <h3>🌍 Groundwater Data Table</h3>
+        <div class="graph">{{ graph12 | safe }}</div>
+    </div>
+
+    <!-- ROW 1 -->
+    <div class="card">
+        <h3>Category Distribution</h3>
+        <div class="graph">{{ graph1 | safe }}</div>
+    </div>
+
+    <div class="card">
+        <h3>Recharge vs Extraction</h3>
+        <div class="graph">{{ graph3 | safe }}</div>
+    </div>
+
+    <div class="card">
+        <h3>Risk Score</h3>
+        <div class="graph">{{ graph4 | safe }}</div>
+    </div>
+
+    <!-- ROW 2 -->
+    <div class="card big">
+        <h3>District Count Analysis</h3>
+        <div class="graph">{{ graph2 | safe }}</div>
+    </div>
+
+    <div class="card">
+        <h3>Stress Level</h3>
+        <div class="graph">{{ graph5 | safe }}</div>
+    </div>
+
+    <!-- ROW 3 -->
+    <div class="card">
+        <h3>Utilization Rate</h3>
+        <div class="graph">{{ graph6 | safe }}</div>
+    </div>
+
+    <div class="card">
+        <h3>Extraction Pattern</h3>
+        <div class="graph">{{ graph7 | safe }}</div>
+    </div>
+
+    <div class="card">
+        <h3>Year Trend</h3>
+        <div class="graph">{{ graph10 | safe }}</div>
+    </div>
+
+    <!-- ROW 4 -->
+    <div class="card">
+        <h3>Top District</h3>
+        <div class="graph">{{ graph11 | safe }}</div>
+    </div>
+
+    <div class="card treemap">
+        <h3>Water Balance</h3>
+        <div class="graph">{{ graph8 | safe }}</div>
+    </div>
+
+</div>
+
+{% endblock %}

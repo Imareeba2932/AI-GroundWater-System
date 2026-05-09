@@ -1,0 +1,154 @@
+{% extends "dashboard.html" %}
+
+{% block css %}
+<style>
+
+/* GRID SAME AS CRISIS PAGE */
+.wb-container{
+    display:grid;
+    grid-template-columns:repeat(3, 1fr);
+    gap:20px;
+    width:100%;
+}
+
+/* CARD STYLE */
+.wb-card{
+    background:white;
+    border-radius:12px;
+    padding:15px;
+    height:300px;
+    display:flex;
+    flex-direction:column;
+    box-shadow:0 4px 15px rgba(0,0,0,0.03);
+    overflow:hidden;
+    border-top: 4px solid #0B3C5D;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.wb-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+}
+
+.wb-card:nth-child(2n) {
+    border-top-color: #FFB300;
+}
+
+.wb-card:nth-child(3n) {
+    border-top-color: #2CA58D;
+}
+
+/* HEADING */
+.wb-card h4{
+    font-size:15px;
+    margin-bottom:10px;
+    color:#112B3C;
+    font-weight: 600;
+}
+
+/* GRAPH AREA */
+.graph{
+    flex:1;
+    width: 100%;
+}
+
+.graph > div,
+.graph iframe,
+.graph svg{
+    width:100% !important;
+    height:100% !important;
+    background: transparent !important;
+}
+
+/* BIG CARD */
+.wb-big{
+    grid-column:span 2;
+    height:320px;
+}
+
+/* RESPONSIVE */
+@media(max-width:900px){
+    .wb-container{
+        grid-template-columns:repeat(2,1fr);
+    }
+    .wb-big{
+        grid-column:span 2;
+    }
+}
+
+@media(max-width:500px){
+    .wb-container{
+        grid-template-columns:1fr;
+    }
+    .wb-big{
+        grid-column:span 1;
+    }
+}
+
+</style>
+{% endblock %}
+
+{% block content %}
+
+<div class="wb-container">
+
+    <!-- 🔥 MAIN BALANCE GRAPH -->
+    <div class="wb-card wb-big">
+        <h4>Water Balance Overview</h4>
+        <div class="graph">{{ graph1|safe }}</div>
+    </div>
+
+    <!-- ROW 1 -->
+    <div class="wb-card">
+        <h4>Recharge Analysis</h4>
+        <div class="graph">{{ graph2|safe }}</div>
+    </div>
+
+
+
+    <div class="wb-card">
+        <h4>Net Water Balance</h4>
+        <div class="graph">{{ graph4|safe }}</div>
+    </div>
+
+    <!-- ROW 2 -->
+    <div class="wb-card wb-big">
+        <h4>Seasonal Variation</h4>
+        <div class="graph">{{ graph5|safe }}</div>
+    </div>
+
+    <div class="wb-card">
+        <h4>District Comparison</h4>
+        <div class="graph">{{ graph6|safe }}</div>
+    </div>
+
+    <div class="wb-card">
+        <h4>Overuse Zones</h4>
+        <div class="graph">{{ graph7|safe }}</div>
+    </div>
+
+    <!-- ROW 3 -->
+    <div class="wb-card">
+        <h4>Rainfall Impact</h4>
+        <div class="graph">{{ graph8|safe }}</div>
+    </div>
+
+    <div class="wb-card">
+        <h4>Groundwater Level</h4>
+        <div class="graph">{{ graph9|safe }}</div>
+    </div>
+
+    <div class="wb-card">
+        <h4>Final Balance Score</h4>
+        <div class="graph">{{ graph10|safe }}</div>
+    </div>
+
+    <!-- FINAL -->
+    <div class="wb-card">
+        <h4>Risk Summary</h4>
+        <div class="graph">{{ graph11|safe }}</div>
+    </div>
+
+</div>
+
+{% endblock %}

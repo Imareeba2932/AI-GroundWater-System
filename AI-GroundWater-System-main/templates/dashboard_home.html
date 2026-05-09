@@ -1,0 +1,22 @@
+{% extends "dashboard.html" %}
+
+{% block content %}
+<div class="dashboard-grid">
+    <div class="card big">
+        <h3>State-wise Total Extraction vs Recharge</h3>
+        <div class="graph">{{ graph1 | safe }}</div>
+    </div>
+    <div class="card">
+        <h3>Risk Level Distribution</h3>
+        <div class="graph">{{ graph2 | safe }}</div>
+    </div>
+    <div class="card big">
+        <h3>Stress Level by State</h3>
+        <div class="graph">{{ graph3 | safe }}</div>
+    </div>
+    <div class="card">
+        <h3>Water Balance Status</h3>
+        <div class="graph">{{ graph4 | safe }}</div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,176 @@
+{% extends 'dashboard.html' %}
+
+{% block css %}
+<style>
+/* MAIN GRID */
+.dashboard{
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+    width: 100%;
+}
+
+/* CARD */
+.card{
+    background: white;
+    border-radius: 12px;
+    padding: 15px;
+    height: 400px;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.03);
+    overflow: hidden;
+    min-width: 0;
+    border-top: 4px solid #0B3C5D;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+}
+
+.card:nth-child(2n) { border-top-color: #FFB300; }
+.card:nth-child(3n) { border-top-color: #2CA58D; }
+
+/* TITLE */
+.card h4{
+    font-size: 15px;
+    text-align: center;
+    margin-bottom: 10px;
+    color: #112B3C;
+    font-weight: 600;
+}
+
+/* GRAPH */
+.graph{
+    flex: 1;
+    width: 100%;
+    min-width: 0;
+}
+
+/* FIX PLOTLY / SVG */
+.graph > div,
+.graph iframe,
+.graph svg{
+    width: 100% !important;
+    height: 100% !important;
+    background: transparent !important;
+}
+
+/* BIG CARD */
+.big{
+    grid-column: span 2;
+    height: 450px;
+}
+
+.simulator-controls {
+    background: white;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.03);
+    margin-bottom: 25px;
+    border-left: 5px solid #FFB300;
+}
+
+.slider-group {
+    margin-bottom: 15px;
+}
+
+.slider-group label {
+    display: flex;
+    justify-content: space-between;
+    font-weight: 600;
+    margin-bottom: 8px;
+    color: #112B3C;
+}
+
+.slider-group input[type="range"] {
+    width: 100%;
+    margin-bottom: 5px;
+}
+
+.simulator-controls button {
+    padding: 12px 20px;
+    background: #0B3C5D;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 15px;
+    width: 100%;
+    transition: 0.3s ease;
+}
+
+.simulator-controls button:hover {
+    background: #FFB300;
+    transform: translateY(-2px);
+}
+
+/* RESPONSIVE */
+@media(max-width:900px){
+    .dashboard{
+        grid-template-columns: 1fr;
+    }
+    .big{
+        grid-column: span 1;
+    }
+}
+</style>
+{% endblock %}
+
+{% block content %}
+
+<div class="simulator-controls">
+    <h3 style="color: #0B3C5D; margin-bottom: 15px;">🌍 "What-If" Scenario Simulator</h3>
+    <p style="font-size: 13px; color: #666; margin-bottom: 20px;">Use the sliders below to simulate environmental changes and see how they would dynamically affect groundwater risk categories across all districts.</p>
+    
+    <form method="POST">
+        <div class="slider-group">
+            <label>
+                <span>Annual Rainfall / Recharge Change (%)</span>
+                <span id="rainVal">{{ rainfall_change }}%</span>
+            </label>
+            <input type="range" name="rainfall_change" min="-50" max="50" value="{{ rainfall_change }}" oninput="document.getElementById('rainVal').innerText = this.value + '%'">
+        </div>
+        
+        <div class="slider-group">
+            <label>
+                <span>Annual Extraction Change (%)</span>
+                <span id="extVal">{{ extraction_change }}%</span>
+            </label>
+            <input type="range" name="extraction_change" min="-50" max="50" value="{{ extraction_change }}" oninput="document.getElementById('extVal').innerText = this.value + '%'">
+        </div>
+        
+        <button type="submit">Run Simulation</button>
+    </form>
+</div>
+
+<div class="dashboard">
+
+    <div class="card">
+        <h4>Impact on Risk Categories</h4>
+        <div class="graph">
+            {% if graph1 %}
+                {{ graph1|safe }}
+            {% else %}
+                <p>Simulation data unavailable.</p>
+            {% endif %}
+        </div>
+    </div>
+
+    <div class="card">
+        <h4>Simulated Risk Flow by State</h4>
+        <div class="graph">
+            {% if graph2 %}
+                {{ graph2|safe }}
+            {% else %}
+                <p>Simulation data unavailable.</p>
+            {% endif %}
+        </div>
+    </div> 
+
+</div>
+
+{% endblock %}

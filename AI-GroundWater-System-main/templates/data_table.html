@@ -1,0 +1,86 @@
+{% extends "dashboard.html" %}
+
+{% block css %}
+<!-- DataTables CSS -->
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.css">
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/2.4.1/css/buttons.dataTables.min.css">
+<style>
+/* Style adjustments for DataTables */
+.dataTables_wrapper .dataTables_filter input {
+    border-radius: 5px;
+    border: 1px solid #ddd;
+    padding: 5px 10px;
+}
+.dataTables_wrapper .dt-buttons button {
+    background: #0B3C5D !important;
+    color: white !important;
+    border: none !important;
+    border-radius: 5px !important;
+    padding: 5px 15px !important;
+    margin-bottom: 15px !important;
+    transition: 0.2s !important;
+}
+.dataTables_wrapper .dt-buttons button:hover {
+    background: #FFB300 !important;
+}
+table.dataTable thead th {
+    background: #f4f7f6;
+    color: #112B3C;
+    border-bottom: 2px solid #ddd;
+}
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="card full" style="height: auto; min-height: 500px;">
+    <h3 style="margin-bottom: 20px;">Groundwater Dataset (Raw Exportable Data)</h3>
+    <table id="groundwaterTable" class="display" style="width:100%">
+        <thead>
+            <tr>
+                {% for col in columns %}
+                <th>{{ col.replace('_', ' ').title() }}</th>
+                {% endfor %}
+            </tr>
+        </thead>
+        <tbody>
+            {% for row in data %}
+            <tr>
+                {% for col in columns %}
+                <td>
+                    {% if row[col] is number %}
+                        {{ "%.2f"|format(row[col]) }}
+                    {% else %}
+                        {{ row[col] }}
+                    {% endif %}
+                </td>
+                {% endfor %}
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<!-- jQuery and DataTables JS -->
+<script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.js"></script>
+<!-- DataTables Buttons (Excel/CSV/PDF) -->
+<script src="https://cdn.datatables.net/buttons/2.4.1/js/dataTables.buttons.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.4.1/js/buttons.html5.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.4.1/js/buttons.print.min.js"></script>
+
+<script>
+$(document).ready(function() {
+    $('#groundwaterTable').DataTable({
+        dom: 'Bfrtip',
+        buttons: [
+            'copy', 'csv', 'excel', 'pdf', 'print'
+        ],
+        pageLength: 15,
+        order: [[ 6, "desc" ]] // Sort by risk_score desc if it's the 7th column
+    });
+});
+</script>
+{% endblock %}

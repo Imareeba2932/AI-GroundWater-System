@@ -1,0 +1,153 @@
+{% extends 'dashboard.html' %}
+
+{% block css %}
+<style>
+/* MAIN GRID */
+.dashboard{
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    width: 100%;
+}
+
+/* CARD */
+.card{
+    background: white;
+    border-radius: 12px;
+    padding: 15px;
+    height: 400px;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.03);
+    overflow: hidden;
+    min-width: 0;
+    border-top: 4px solid #0B3C5D;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+}
+
+.card:nth-child(2n) { border-top-color: #FFB300; }
+.card:nth-child(3n) { border-top-color: #2CA58D; }
+
+/* TITLE */
+.card h4{
+    font-size: 15px;
+    text-align: center;
+    margin-bottom: 10px;
+    color: #112B3C;
+    font-weight: 600;
+}
+
+/* GRAPH */
+.graph{
+    flex: 1;
+    width: 100%;
+    min-width: 0;
+}
+
+/* FIX PLOTLY / SVG */
+.graph > div,
+.graph iframe,
+.graph svg{
+    width: 100% !important;
+    height: 100% !important;
+    background: transparent !important;
+}
+
+/* BIG CARD */
+.big{
+    grid-column: span 2;
+    height: 450px;
+}
+
+/* FULL WIDTH */
+.full{
+    grid-column: span 3;
+    height: 450px;
+}
+
+.filter-row {
+    margin-bottom: 20px;
+    background: white;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0px 2px 6px rgba(0,0,0,0.08);
+    display: flex;
+    gap: 15px;
+    align-items: center;
+}
+
+.filter-row select {
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    min-width: 250px;
+}
+
+.filter-row button {
+    padding: 10px 20px;
+    background: #0B3C5D;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: 0.3s ease;
+}
+
+.filter-row button:hover {
+    background: #FFB300;
+}
+
+/* RESPONSIVE */
+@media(max-width:900px){
+    .dashboard{
+        grid-template-columns: 1fr;
+    }
+    .big, .full {
+        grid-column: span 1;
+    }
+}
+</style>
+{% endblock %}
+
+{% block content %}
+
+<form class="filter-row" method="GET">
+    <label style="font-weight: bold;">Select District to Profile:</label>
+    <select name="district">
+        {% for d in districts %}
+        <option value="{{ d }}" {% if selected_district == d %}selected{% endif %}>{{ d }}</option>
+        {% endfor %}
+    </select>
+    <button type="submit">Analyze District</button>
+</form>
+
+{% if selected_district %}
+<div class="dashboard">
+
+    <div class="card big">
+        <h4>District vs State Average Profiler</h4>
+        <div class="graph">{{ graph1|safe }}</div>
+    </div>
+
+    <div class="card">
+        <h4>Extraction Intensity Gauge</h4>
+        <div class="graph">{{ graph2|safe }}</div>
+    </div> 
+
+    <div class="card full">
+        <h4>Water Balance Breakdown</h4>
+        <div class="graph">{{ graph3|safe }}</div>
+    </div> 
+
+</div>
+{% else %}
+<p>Please select a district to view the profile.</p>
+{% endif %}
+
+{% endblock %}

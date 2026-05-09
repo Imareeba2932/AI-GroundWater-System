@@ -1,0 +1,129 @@
+{% extends 'dashboard.html' %}
+
+{% block css %}
+<style>
+/* MAIN GRID */
+.dashboard{
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    width: 100%;
+}
+
+/* CARD */
+.card{
+    background: white;
+    border-radius: 12px;
+    padding: 15px;
+    height: 400px;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.03);
+    overflow: hidden;
+    min-width: 0;
+    border-top: 4px solid #0B3C5D;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+}
+
+.card:nth-child(2n) { border-top-color: #FFB300; }
+.card:nth-child(3n) { border-top-color: #2CA58D; }
+
+/* TITLE */
+.card h4{
+    font-size: 15px;
+    text-align: center;
+    margin-bottom: 10px;
+    color: #112B3C;
+    font-weight: 600;
+}
+
+/* GRAPH */
+.graph{
+    flex: 1;
+    width: 100%;
+    min-width: 0;
+}
+
+/* FIX PLOTLY / SVG */
+.graph > div,
+.graph iframe,
+.graph svg{
+    width: 100% !important;
+    height: 100% !important;
+    background: transparent !important;
+}
+
+/* BIG CARD */
+.big{
+    grid-column: span 2;
+    height: 450px;
+}
+
+/* FULL WIDTH */
+.full{
+    grid-column: span 3;
+    height: 450px;
+}
+
+/* RESPONSIVE */
+@media(max-width:900px){
+    .dashboard{
+        grid-template-columns: 1fr;
+    }
+    .big, .full{
+        grid-column: span 1;
+    }
+}
+</style>
+{% endblock %}
+
+{% block content %}
+
+<div style="background: #0B3C5D; color: white; padding: 20px; border-radius: 8px; margin-bottom: 20px;">
+    <h3>🤖 AI Feature Correlation Analysis</h3>
+    <p style="font-size: 13px; margin-top: 5px; opacity: 0.9;">This module exposes the mathematical relationships the Machine Learning model discovered between dataset features. It helps in understanding what factors most strongly influence groundwater risk and stress levels.</p>
+</div>
+
+<div class="dashboard">
+
+    <div class="card big">
+        <h4>3D Feature Space Mapping</h4>
+        <div class="graph">
+            {% if graph2 %}
+                {{ graph2|safe }}
+            {% else %}
+                <p>3D Visualization requires annual_recharge, annual_extraction, risk_score, and category fields.</p>
+            {% endif %}
+        </div>
+    </div>
+
+    <div class="card">
+        <h4>Feature Correlation Heatmap</h4>
+        <div class="graph">
+            {% if graph1 %}
+                {{ graph1|safe }}
+            {% else %}
+                <p>Numerical features required for correlation heatmap.</p>
+            {% endif %}
+        </div>
+    </div> 
+
+    <div class="card full">
+        <h4>Bivariate Density Analysis (Scatter + Marginal)</h4>
+        <div class="graph">
+            {% if graph3 %}
+                {{ graph3|safe }}
+            {% else %}
+                <p>Density analysis requires annual_recharge, annual_extraction, and category fields.</p>
+            {% endif %}
+        </div>
+    </div> 
+
+</div>
+
+{% endblock %}

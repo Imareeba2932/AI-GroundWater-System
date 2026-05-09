@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Auth</title>
+
+<style>
+
+/* RESET */
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:'Segoe UI', sans-serif;
+}
+
+body{
+background:#ffffff;
+height:100vh;
+display:flex;
+flex-direction:column;
+overflow:hidden;
+}
+
+/* HEADER */
+header{
+background: linear-gradient(135deg, #4a7c59, #6b8f47);
+padding:12px 60px;
+display:flex;
+justify-content:space-between;
+align-items:center;
+color:white;
+}
+
+.logo{
+display:flex;
+align-items:center;
+gap:12px;
+}
+
+.logo img{
+width:110px;
+height:55px;
+object-fit:contain;
+}
+
+/* NAV */
+nav a{
+margin-left:15px;
+text-decoration:none;
+padding:8px 20px;
+border-radius:25px;
+border:1.5px solid white;
+color:white;
+transition:0.3s ease;
+background:transparent;
+}
+
+nav a:hover{
+background:white;
+color:#4a7c59;
+}
+
+/* ACTIVE BUTTON */
+.nav-active{
+background:white;
+color:#4a7c59;
+font-weight:700;
+}
+
+/* LAYOUT */
+.container{
+display:flex;
+flex:1;
+}
+
+.left{
+flex:1;
+background:url("{{ url_for('static', filename='hero image of home page.png') }}");
+background-size:cover;
+background-position:center;
+}
+
+.right{
+flex:1;
+display:flex;
+justify-content:center;
+align-items:center;
+background:#fff;
+}
+
+/* AUTH BOX */
+.auth-box{
+width:100%;
+max-width:380px;
+}
+
+.auth-title{
+color:#4a7c59;
+font-size:28px;
+font-weight:bold;
+margin-bottom:20px;
+text-align:center;
+}
+
+/* INPUT */
+.input-group{
+margin-bottom:18px;
+}
+
+.input-group input{
+width:100%;
+padding:14px;
+border:2.5px solid #ddd;
+border-radius:10px;
+font-size:15px;
+font-weight:600;
+outline:none;
+transition:0.3s ease;
+}
+
+.input-group input:focus{
+border-color:#4a7c59;
+box-shadow:0 0 8px rgba(74, 124, 89, 0.4);
+transform:scale(1.03);
+}
+
+/* BUTTON */
+.btn{
+width:100%;
+padding:13px;
+background:#4a7c59;
+color:white;
+border:none;
+border-radius:10px;
+font-weight:bold;
+cursor:pointer;
+transition:0.3s ease;
+}
+
+.btn:hover{
+transform:scale(1.05);
+background:#3a5f45;
+}
+
+/* SWITCH */
+.switch-link{
+text-align:center;
+margin-top:18px;
+font-size:14px;
+color:#555;
+}
+
+.switch-link a{
+color:#6b8f47;
+font-weight:bold;
+text-decoration:none;
+}
+
+/* POPUP */
+.popup-container{
+position:fixed;
+top:20px;
+right:20px;
+z-index:9999;
+}
+
+.popup{
+padding:12px 18px;
+margin-bottom:10px;
+border-radius:10px;
+color:white;
+font-weight:600;
+animation:slideIn 0.3s ease;
+transition:0.4s;
+}
+
+.popup.success{ background:#2ecc71; }
+.popup.error{ background:#e74c3c; }
+
+@keyframes slideIn{
+from{opacity:0; transform:translateY(-10px);}
+to{opacity:1; transform:translateY(0);}
+}
+
+</style>
+</head>
+
+<body>
+
+<header>
+
+<div class="logo">
+<img src="{{ url_for('static', filename='logo of web.png') }}">
+<h2>AI Groundwater Prediction System</h2>
+</div>
+
+<nav>
+
+<a href="{{ url_for('home') }}">Home</a>
+<a href="{{ url_for('about') }}">About</a>
+<a href="{{ url_for('contact') }}">Contact</a>
+
+<!-- LOGIN PAGE NAV -->
+{% if mode == 'login' %}
+
+<a href="{{ url_for('auth', mode='login') }}" class="nav-active">Login</a>
+<a href="{{ url_for('auth', mode='register') }}">Register</a>
+
+{% else %}
+
+<a href="{{ url_for('auth', mode='login') }}">Login</a>
+<a href="{{ url_for('auth', mode='register') }}" class="nav-active">Register</a>
+
+{% endif %}
+
+</nav>
+
+</header>
+
+<!-- POPUPS -->
+{% with messages = get_flashed_messages(with_categories=true) %}
+{% if messages %}
+<div class="popup-container">
+    {% for category, message in messages %}
+        <div class="popup {{ category }}">
+            {{ message }}
+        </div>
+    {% endfor %}
+</div>
+{% endif %}
+{% endwith %}
+
+<div class="container">
+
+<div class="left"></div>
+
+<div class="right">
+
+<div class="auth-box">
+
+{% if mode == 'register' %}
+<div class="auth-title">Register</div>
+{% else %}
+<div class="auth-title">Login</div>
+{% endif %}
+
+<form method="POST" action="{{ url_for('auth', mode=mode) }}">
+
+{% if mode == 'register' %}
+<div class="input-group">
+<input type="text" name="name" placeholder="Full Name" required>
+</div>
+
+<div class="input-group">
+<input type="text" name="district" placeholder="District" required>
+</div>
+
+<div class="input-group">
+<input type="text" name="state" placeholder="State" required>
+</div>
+{% endif %}
+
+<div class="input-group">
+<input type="email" name="email" placeholder="Email Address" required>
+</div>
+
+<div class="input-group">
+<input type="password" name="password" placeholder="Password" required>
+</div>
+
+{% if mode == 'register' %}
+<div class="input-group">
+<input type="password" name="confirm_password" placeholder="Confirm Password" required>
+</div>
+{% endif %}
+
+<button type="submit" class="btn">
+{% if mode == 'register' %}Create Account{% else %}Login{% endif %}
+</button>
+
+{% if mode == 'login' %}
+<div style="text-align: right; margin-top: 10px;">
+    <a href="#" onclick="alert('Please contact the administrator to reset your password.')" style="color: #0B3C5D; font-size: 13px; text-decoration: none; font-weight: 600;">Forgot Password?</a>
+</div>
+{% endif %}
+
+</form>
+
+<div class="switch-link">
+
+{% if mode == 'register' %}
+Already have an account?
+<a href="{{ url_for('auth', mode='login') }}">Login Now</a>
+{% else %}
+Don't have an account?
+<a href="{{ url_for('auth', mode='register') }}">Register Now</a>
+{% endif %}
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+<!-- POPUP TIMER (3 sec) -->
+<script>
+setTimeout(() => {
+    document.querySelectorAll('.popup').forEach(p => {
+        p.style.opacity = "0";
+        p.style.transform = "translateY(-10px)";
+        setTimeout(() => p.remove(), 500);
+    });
+}, 3000);
+</script>
+
+</body>
+</html>

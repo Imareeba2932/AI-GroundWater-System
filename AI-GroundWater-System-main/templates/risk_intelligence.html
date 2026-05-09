@@ -1,0 +1,152 @@
+{% extends "dashboard.html" %}
+{% block css %}
+<style>
+
+/* MAIN GRID */
+.dashboard-grid{
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    padding: 10px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+/* CARD */
+.card{
+    background: white;
+    border-radius: 12px;
+    padding: 15px;
+    height: 300px;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.03);
+    overflow: hidden;
+    min-width: 0;
+    border-top: 4px solid #0B3C5D;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+}
+
+.card:nth-child(2n) { border-top-color: #FFB300; }
+.card:nth-child(3n) { border-top-color: #2CA58D; }
+
+/* TITLE */
+.card h3{
+    font-size: 15px;
+    text-align: center;
+    margin-bottom: 10px;
+    color: #112B3C;
+    font-weight: 600;
+}
+
+/* GRAPH */
+.graph{
+    flex: 1;
+    width: 100%;
+    min-width: 0;
+}
+
+/* FIX PLOTLY / SVG */
+.graph > div,
+.graph iframe,
+.graph svg{
+    width: 100% !important;
+    height: 100% !important;
+    background: transparent !important;
+}
+
+/* BIG CARD */
+.big, .treemap{
+    grid-column: span 2;
+    height: 320px;
+}
+
+/* FULL WIDTH TABLE */
+.full{
+    grid-column: 1 / -1;
+    height: 350px;
+}
+
+/* RESPONSIVE */
+@media(max-width:900px){
+    .dashboard-grid{
+        grid-template-columns: repeat(2, 1fr);
+    }
+    .big, .treemap, .full{
+        grid-column: span 2;
+    }
+}
+
+@media(max-width:500px){
+    .dashboard-grid{
+        grid-template-columns: 1fr;
+    }
+    .big, .treemap, .full{
+        grid-column: span 1;
+    }
+}
+
+</style>
+{% endblock %}
+
+{% block content %}
+
+<div class="dashboard-grid">
+
+    <!-- FULL -->
+    <div class="card full">
+        <h3>District-wise Risk Structure</h3>
+        <div class="graph">{{ graph1|safe }}</div>
+    </div>
+
+    <!-- ROW 1 -->
+    <div class="card">
+        <h3>Risk Level Distribution</h3>
+        <div class="graph">{{ graph2|safe }}</div>
+    </div>
+
+    <div class="card">
+        <h3>Average Risk Score by Category</h3>
+        <div class="graph">{{ graph3|safe }}</div>
+    </div>
+
+    <div class="card">
+        <h3>Extraction Ratio Distribution by Category</h3>
+        <div class="graph">{{ graph4|safe }}</div>
+    </div>
+
+    <!-- ROW 2 -->
+    <div class="card">
+        <h3>Risk Score vs Stress Level</h3>
+        <div class="graph">{{ graph5|safe }}</div>
+    </div>
+
+    <div class="card">
+        <h3>Risk Score Distribution</h3>
+        <div class="graph">{{ graph6|safe }}</div>
+    </div>
+
+    <div class="card">
+        <h3>Risk Score by Category</h3>
+        <div class="graph">{{ graph9|safe }}</div>
+    </div>
+
+    <!-- ROW 3 -->
+    <div class="card">
+        <h3>High vs Low Risk Areas</h3>
+        <div class="graph">{{ graph8|safe }}</div>
+    </div>
+
+    <div class="card treemap">
+        <h3>Top 10 High Risk Districts</h3>
+        <div class="graph">{{ graph7|safe }}</div>
+    </div>
+
+</div>
+
+{% endblock %}

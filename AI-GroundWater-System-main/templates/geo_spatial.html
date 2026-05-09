@@ -1,0 +1,151 @@
+{% extends "dashboard.html" %}
+
+{% block css %}
+<style>
+
+/* MAIN GRID */
+.geo-container{
+    display:grid;
+    grid-template-columns:repeat(3, 1fr);
+    gap:20px;
+    width:100%;
+}
+
+/* CARD STYLE */
+.geo-card{
+    background:white;
+    border-radius:12px;
+    padding:15px;
+    height:300px;
+    display:flex;
+    flex-direction:column;
+    box-shadow:0 4px 15px rgba(0,0,0,0.03);
+    overflow:hidden;
+    border-top: 4px solid #0B3C5D;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.geo-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+}
+
+.geo-card:nth-child(2n) {
+    border-top-color: #FFB300;
+}
+
+.geo-card:nth-child(3n) {
+    border-top-color: #2CA58D;
+}
+
+/* HEADING */
+.geo-card h4{
+    font-size:15px;
+    margin-bottom:10px;
+    color:#112B3C;
+    font-weight: 600;
+}
+
+/* GRAPH AREA */
+.graph{
+    flex:1;
+    width: 100%;
+}
+
+.graph > div,
+.graph iframe,
+.graph svg{
+    width:100% !important;
+    height:100% !important;
+    background: transparent !important;
+}
+
+/* BIG CARD */
+.geo-big{
+    grid-column:span 2;
+    height:320px;
+}
+
+/* FULL WIDTH */
+.geo-full{
+    grid-column: 1 / -1;
+    height:350px;
+}
+
+/* RESPONSIVE */
+@media(max-width:900px){
+    .geo-container{
+        grid-template-columns:repeat(2,1fr);
+    }
+    .geo-big, .geo-full{
+        grid-column:span 2;
+    }
+}
+
+@media(max-width:500px){
+    .geo-container{
+        grid-template-columns:1fr;
+    }
+    .geo-big, .geo-full{
+        grid-column:span 1;
+    }
+}
+
+</style>
+{% endblock %}
+
+{% block content %}
+
+<div class="geo-container">
+
+    <!-- 🔥 BIG MAP -->
+    <div class="geo-card geo-full">
+        <h4>Geo-Spatial Risk Map</h4>
+        <div class="graph">{{ graph1|safe }}</div>
+    </div>
+
+    <!-- ROW -->
+    <div class="geo-card">
+        <h4>Spatial Density</h4>
+        <div class="graph">{{ graph2|safe }}</div>
+    </div>
+
+    <div class="geo-card">
+        <h4>Hotspot Zones</h4>
+        <div class="graph">{{ graph3|safe }}</div>
+    </div>
+
+    <div class="geo-card">
+        <h4>Water Stress Map</h4>
+        <div class="graph">{{ graph4|safe }}</div>
+    </div>
+
+    <div class="geo-card">
+        <h4>Groundwater Trend</h4>
+        <div class="graph">{{ graph5|safe }}</div>
+    </div>
+
+    <!-- ROW -->
+    <div class="geo-card">
+        <h4>District Clusters</h4>
+        <div class="graph">{{ graph6|safe }}</div>
+    </div>
+
+    <div class="geo-card">
+        <h4>Risk Heat Zones</h4>
+        <div class="graph">{{ graph7|safe }}</div>
+    </div>
+
+    <div class="geo-card geo-big">  
+        <h4>Geo Correlation</h4>
+        <div class="graph">{{ graph8|safe }}</div>
+    </div>
+
+    <div class="geo-card">
+        <h4>Final Spatial Score</h4>
+        <div class="graph">{{ graph9|safe }}</div>
+    </div>
+
+</div>
+
+{% endblock %}
