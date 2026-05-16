@@ -198,8 +198,8 @@ def overview():
 
     # ================= GRAPH 1 =================
     fig1 = px.pie(df_copy, names='category',
-                  title='Category Distribution',
-                  color_discrete_sequence=px.colors.sequential.Blugrn_r)
+                title='Category Distribution',
+                color_discrete_sequence=px.colors.sequential.Blugrn_r)
     graph1 = make_responsive(fig1)
 
     # ================= GRAPH 2 =================
@@ -207,33 +207,33 @@ def overview():
     district_count.columns = ['state', 'district_count']
 
     fig2 = px.treemap(district_count,
-                      path=['state'],
-                      values='district_count',
-                      title='District Count per State',
-                      color='district_count',
-                      color_continuous_scale=px.colors.sequential.Tealgrn)
+                    path=['state'],
+                    values='district_count',
+                    title='District Count per State',
+                    color='district_count',
+                    color_continuous_scale=px.colors.sequential.Tealgrn)
     graph2 = make_responsive(fig2)
 
     # ================= GRAPH 3 =================
     avg_values = df_copy.groupby('category')[['annual_recharge', 'annual_extraction']].mean().reset_index()
 
     fig3 = px.bar(avg_values,
-                  x='category',
-                  y=['annual_recharge', 'annual_extraction'],
-                  barmode='group',
-                  title='Avg Recharge vs Extraction',
-                  color_discrete_sequence=px.colors.sequential.Blugrn_r)
+                x='category',
+                y=['annual_recharge', 'annual_extraction'],
+                barmode='group',
+                title='Avg Recharge vs Extraction',
+                color_discrete_sequence=px.colors.sequential.Blugrn_r)
     graph3 = make_responsive(fig3)
 
     # ================= GRAPH 4 =================
     avg_risk = df_copy.groupby('category')['risk_score'].mean().reset_index()
 
     fig4 = px.bar(avg_risk,
-                  x='category',
-                  y='risk_score',
-                  color='risk_score',
-                  color_continuous_scale=px.colors.sequential.Blugrn,
-                  title='Average Risk Score')
+                x='category',
+                y='risk_score',
+                color='risk_score',
+                color_continuous_scale=px.colors.sequential.Blugrn,
+                title='Average Risk Score')
     graph4 = make_responsive(fig4)
 
 
@@ -243,10 +243,10 @@ def overview():
     df_copy['stress_level'] = pd.to_numeric(df_copy['stress_level'], errors='coerce')
 
     fig5 = px.histogram(
-              df_copy.dropna(subset=['stress_level']),
-              x='stress_level',
-              nbins=25,
-              color_discrete_sequence=px.colors.sequential.Blugrn_r
+            df_copy.dropna(subset=['stress_level']),
+            x='stress_level',
+            nbins=25,
+            color_discrete_sequence=px.colors.sequential.Blugrn_r
 )
 
     graph5 = make_responsive(fig5)
@@ -255,20 +255,20 @@ def overview():
     avg_util = df_copy.groupby('category')['utilization_rate'].mean().reset_index()
 
     fig6 = px.pie(avg_util,
-                  names='category',
-                  values='utilization_rate',
-                  hole=0.5,
-                  title='Utilization Rate',
-                  color_discrete_sequence=px.colors.sequential.Blugrn_r)
+                names='category',
+                values='utilization_rate',
+                hole=0.5,
+                title='Utilization Rate',
+                color_discrete_sequence=px.colors.sequential.Blugrn_r)
     graph6 = make_responsive(fig6)
 
     # ================= GRAPH 7 =================
     fig7 = px.box(df_copy,
-                  x='category',
-                  y='annual_extraction',
-                  color='category',
-                  title='Extraction Distribution',
-                  color_discrete_sequence=px.colors.sequential.Tealgrn)
+                x='category',
+                y='annual_extraction',
+                color='category',
+                title='Extraction Distribution',
+                color_discrete_sequence=px.colors.sequential.Tealgrn)
     graph7 = make_responsive(fig7)
 
     # ================= GRAPH 8 =================
@@ -283,34 +283,34 @@ def overview():
     heat_df = df_copy.groupby(['state', 'category'])['annual_extraction'].mean().reset_index()
 
     fig9 = px.density_heatmap(heat_df,
-                             x='state',
-                             y='category',
-                             z='annual_extraction',
-                             color_continuous_scale='Tealgrn',
-                             title='State-wise Category Heatmap')
+                            x='state',
+                            y='category',
+                            z='annual_extraction',
+                            color_continuous_scale='Tealgrn',
+                            title='State-wise Category Heatmap')
     graph9 = make_responsive(fig9)
 
     # ================= GRAPH 10 =================
     trend_df = df_copy.groupby(['year', 'category'])['annual_extraction'].mean().reset_index()
 
     fig10 = px.bar(trend_df,
-                   x='year',
-                   y='annual_extraction',
-                   color='category',
-                   barmode='group',
-                   title='Yearly Extraction Trend',
-                   color_discrete_sequence=px.colors.sequential.Blugrn_r)
+                x='year',
+                y='annual_extraction',
+                color='category',
+                barmode='group',
+                title='Yearly Extraction Trend',
+                color_discrete_sequence=px.colors.sequential.Blugrn_r)
     graph10 = make_responsive(fig10)
 
     # ================= GRAPH 11 =================
     top_districts = df_copy.loc[df_copy.groupby('category')['annual_extraction'].idxmax()]
 
     fig11 = px.bar(top_districts,
-                   x='category',
-                   y='annual_extraction',
-                   color='district',
-                   title='Top District per Category',
-                   color_discrete_sequence=px.colors.sequential.Blugrn_r)
+                x='category',
+                y='annual_extraction',
+                color='district',
+                title='Top District per Category',
+                color_discrete_sequence=px.colors.sequential.Blugrn_r)
     graph11 = make_responsive(fig11)
 
     # ================= GRAPH 12 (TABLE) =================
@@ -385,7 +385,7 @@ def risk_intelligence():
 
     # ================= 2 DONUT: Risk Band =================
     df_copy['risk_band'] = pd.cut(df_copy['risk_score'], bins=[0, 0.33, 0.66, 1],
-                                  labels=['Low', 'Medium', 'High'])
+                                labels=['Low', 'Medium', 'High'])
 
     donut = df_copy['risk_band'].value_counts().reset_index()
     donut.columns = ['risk_band', 'count']
@@ -1286,7 +1286,7 @@ def dashboard():
         df_copy['stress_level_num'] = pd.to_numeric(df_copy['stress_level'], errors='coerce')
         stress_agg = df_copy.groupby('state')['stress_level_num'].mean().reset_index()
         fig3 = px.area(stress_agg, x='state', y='stress_level_num', 
-                       color_discrete_sequence=['#FFB300'])
+                    color_discrete_sequence=['#FFB300'])
         graph3 = make_responsive(fig3)
     else:
         graph3 = None
@@ -1296,7 +1296,7 @@ def dashboard():
         cat_counts = df_copy['category'].value_counts().reset_index()
         cat_counts.columns = ['Category', 'Count']
         fig4 = px.bar(cat_counts, x='Category', y='Count', 
-                      color_discrete_sequence=['#0B3C5D'])
+                    color_discrete_sequence=['#0B3C5D'])
         graph4 = make_responsive(fig4)
     else:
         graph4 = None
@@ -1426,10 +1426,10 @@ def district_profiler():
         graph3 = make_responsive(fig3)
         
     return render_template('district_profiler.html', 
-                          kpis=kpis, 
-                          districts=districts,
-                          selected_district=selected_district,
-                          graph1=graph1, graph2=graph2, graph3=graph3)
+                        kpis=kpis, 
+                        districts=districts,
+                        selected_district=selected_district,
+                        graph1=graph1, graph2=graph2, graph3=graph3)
 
 # ================= NEW ROUTE: AI CORRELATION =================
 @app.route('/ai-correlation')
